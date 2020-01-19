@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/RentC.DTO" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/RentC.DTO" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfCarsDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CarsDTO" nillable="true" type="tns:CarsDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCarsDTO" nillable="true" type="tns:ArrayOfCarsDTO" />
+  <xs:complexType name="CarsDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CarID" type="xs:int" />
+      <xs:element minOccurs="0" name="Manufacturer" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Plate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PricePerDay" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ReservationsDTO" nillable="true" type="tns:ArrayOfReservationsDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CarsDTO" nillable="true" type="tns:CarsDTO" />
+  <xs:complexType name="ArrayOfReservationsDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ReservationsDTO" nillable="true" type="tns:ReservationsDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfReservationsDTO" nillable="true" type="tns:ArrayOfReservationsDTO" />
+  <xs:complexType name="ReservationsDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CarID" type="xs:int" />
+      <xs:element minOccurs="0" name="Cars" nillable="true" type="tns:CarsDTO" />
+      <xs:element minOccurs="0" name="CostumerID" type="xs:int" />
+      <xs:element minOccurs="0" name="CouponCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Coupons" nillable="true" type="tns:CouponsDTO" />
+      <xs:element minOccurs="0" name="Customers" nillable="true" type="tns:CustomersDTO" />
+      <xs:element minOccurs="0" name="EndDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Location" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReservStatsID" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="ReservationStatuses" nillable="true" type="tns:ReservationStatusesDTO" />
+      <xs:element minOccurs="0" name="StartDate" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReservationsDTO" nillable="true" type="tns:ReservationsDTO" />
+  <xs:complexType name="CouponsDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CouponCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Discount" type="xs:decimal" />
+      <xs:element minOccurs="0" name="Reservations" nillable="true" type="tns:ArrayOfReservationsDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CouponsDTO" nillable="true" type="tns:CouponsDTO" />
+  <xs:complexType name="CustomersDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BirthDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CostumerID" type="xs:int" />
+      <xs:element minOccurs="0" name="Location" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Reservations" nillable="true" type="tns:ArrayOfReservationsDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomersDTO" nillable="true" type="tns:CustomersDTO" />
+  <xs:complexType name="ReservationStatusesDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReservStatsID" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="Reservations" nillable="true" type="tns:ArrayOfReservationsDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReservationStatusesDTO" nillable="true" type="tns:ReservationStatusesDTO" />
+</xs:schema>
