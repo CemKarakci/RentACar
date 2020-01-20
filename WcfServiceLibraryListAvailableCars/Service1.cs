@@ -16,12 +16,24 @@ namespace WcfServiceLibraryListAvailableCars
             List<CarsDTO> cars = RentC.Domain.CarsManager.ListCars();
             var reservations = RentC.Domain.ReservationsManager.ListReservations();
 
-            List<ReservationsDTO> newList = new List<ReservationsDTO>(reservations.FindAll(p => p.EndDate > DateTime.Now.Date && p.StartDate <= DateTime.Now.Date));
+            var carsRented = from b in reservations
+                             where
+                                     ((DateTime.Now.Date >= b.StartDate) && (DateTime.Now.Date <= b.EndDate)) ||
+                                     ((DateTime.Now.Date >= b.StartDate) && (DateTime.Now.Date <= b.EndDate)) ||
+                                     ((DateTime.Now.Date <= b.StartDate) && (DateTime.Now.Date >= b.StartDate) && (DateTime.Now.Date <= b.EndDate)) ||
+                                     ((DateTime.Now.Date >= b.StartDate) && (DateTime.Now.Date <= b.EndDate) && (DateTime.Now.Date >= b.EndDate)) ||
+                                     ((DateTime.Now.Date <= b.StartDate) && (DateTime.Now.Date >= b.EndDate))
+                             select b;
 
-            var carIds = newList.Select(x => x.CarID);
+            var availableCars = cars.Where(r => !carsRented.Any(b => b.CarID == r.CarID)).ToList();
+            return availableCars;
 
-            cars.RemoveAll(x => carIds.Contains(x.CarID));
-            return cars;
+            //List<ReservationsDTO> newList = new List<ReservationsDTO>(reservations.FindAll(p => p.EndDate > DateTime.Now.Date && p.StartDate <= DateTime.Now.Date));
+
+            //var carIds = newList.Select(x => x.CarID);
+
+            //cars.RemoveAll(x => carIds.Contains(x.CarID));
+            //return cars;
         }
     }
 
