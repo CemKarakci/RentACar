@@ -71,12 +71,12 @@ namespace RentC.Presentation
             }
 
 
-            else if (IsReserved(reservations, carPlateTextBox.Text) == true
-                      && CheckStartDate(reservations, carPlateTextBox.Text, startDateDateTimePicker.Value.Date) == false)
-            {
-                MessageBox.Show("Please Select a Different Date");
-                return;
-            }
+            //else if (IsReserved(reservations, carPlateTextBox.Text) == true
+            //          && CheckStartDate(reservations, carPlateTextBox.Text, startDateDateTimePicker.Value.Date) == false)
+            //{
+            //    MessageBox.Show("Please Select a Different Date");
+            //    return;
+            //}
 
 
             else if (endDateDateTimePicker.Value.Date <= startDateDateTimePicker.Value.Date)
@@ -86,7 +86,16 @@ namespace RentC.Presentation
                
             }
 
-          
+            else if (IsReserved(reservations, carPlateTextBox.Text) == true
+               && DatesMatch(reservations, carPlateTextBox.Text, startDateDateTimePicker.Value.Date,
+               endDateDateTimePicker.Value.Date) == true)
+            {
+                MessageBox.Show("Car is not available.Please Try a Different Time Period");
+                return;
+            }
+
+
+
 
             else if (cityTextBox.Text.Trim().Length == 0)
             {
@@ -123,21 +132,43 @@ namespace RentC.Presentation
 
         }
 
-
-        private bool CheckStartDate(List<ReservationsDTO> reservations, string text, DateTime date)
+        private bool DatesMatch(List<ReservationsDTO> reservations, string text, DateTime date1, DateTime date2)
         {
             var car = Domain.ReservationsManager.FindCarIdByPlate(text);
             var reservedCars = reservations.FindAll(x => x.CarID == car.CarID).ToList();
 
-            if ((reservedCars.OrderByDescending(p => p.StartDate).First().StartDate < date
-                || reservedCars.OrderBy(p => p.StartDate).First().StartDate > date)
-                || reservedCars.OrderByDescending(p => p.EndDate).First().EndDate < date)
-                return true;
+            var bookedCars = from b in reservedCars
+                             where
+                                     ((date1 >= b.StartDate) && (date1 <= b.EndDate)) ||
+                                     ((date2 >= b.StartDate) && (date2 <= b.EndDate)) ||
+                                     ((date1 <= b.StartDate) && (date2 >= b.StartDate) && (date2 <= b.EndDate)) ||
+                                     ((date1 >= b.StartDate) && (date1 <= b.EndDate) && (date2 >= b.EndDate)) ||
+                                     ((date1 <= b.StartDate) && (date2 >= b.EndDate))
+                             select b;
 
+            var availableCars = reservedCars.Where(r => !bookedCars.Any(b => b.CarID == r.CarID));
+
+            if (availableCars.ToList().Count == 0)
+                return true;
             else
                 return false;
-
         }
+
+
+        //private bool CheckStartDate(List<ReservationsDTO> reservations, string text, DateTime date)
+        //{
+        //    var car = Domain.ReservationsManager.FindCarIdByPlate(text);
+        //    var reservedCars = reservations.FindAll(x => x.CarID == car.CarID).ToList();
+
+        //    if ((reservedCars.OrderByDescending(p => p.StartDate).First().StartDate < date
+        //        || reservedCars.OrderBy(p => p.StartDate).First().StartDate > date)
+        //        || reservedCars.OrderByDescending(p => p.EndDate).First().EndDate < date)
+        //        return true;
+
+        //    else
+        //        return false;
+
+        //}
 
         private bool IsInteger(string text)
         {
