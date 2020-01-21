@@ -19,11 +19,11 @@ namespace RentC.Domain
             return car;
         }
 
-        public static void UpdateCarRent(DTO.ReservationsDTO reservationsDTO)
-        {
-            Persistence.ReservationsRepository.UpdateCarRent(reservationsDTO);
+        //public static void UpdateCarRent(DTO.ReservationsDTO reservationsDTO)
+        //{
+        //    Persistence.ReservationsRepository.UpdateCarRent(reservationsDTO);
 
-        }
+        //}
 
         public static List<DTO.ReservationsDTO> ListReservations()
         {

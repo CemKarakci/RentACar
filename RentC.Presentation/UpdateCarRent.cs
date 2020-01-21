@@ -105,11 +105,11 @@ namespace RentC.Presentation
                 return;
             }
 
-            else if (AlreadyCanceled(reservations, updateCarPlateTextBox.Text, updateClientIdTextBox.Text, updateEndDateDateTimePicker.Value.Date, updateCityTextBox.Text) == true)
-            {
-                MessageBox.Show("Can't Cancel. Already Canceled");
-                return;
-            }
+            //else if (AlreadyCanceled(reservations, updateCarPlateTextBox.Text, updateClientIdTextBox.Text, updateEndDateDateTimePicker.Value.Date, updateCityTextBox.Text) == true)
+            //{
+            //    MessageBox.Show("Can't Cancel. Already Canceled");
+            //    return;
+            //}
 
 
             else
@@ -144,25 +144,25 @@ namespace RentC.Presentation
             }
         }
 
-        private bool AlreadyCanceled(List<ReservationsDTO> reservations, string text, string text2, DateTime date, string text3)
-        {
-            var car = Domain.ReservationsManager.FindCarIdByPlate(text);
-            var reservedCars = reservations.FindAll(x => x.CarID == car.CarID).ToList();
-            var match = reservations.Where(p => p.CarID == car.CarID && p.CostumerID == Convert.ToInt32(text2)
-            && p.EndDate == date && p.Location == text3);
-            var statuses = Domain.ReservationStatusesManager.ListStatuses();
-            var canceledReservations = statuses.FindAll(x => x.Name == "CANCELED").ToList();
+        //private bool AlreadyCanceled(List<ReservationsDTO> reservations, string text, string text2, DateTime date, string text3)
+        //{
+        //    var car = Domain.ReservationsManager.FindCarIdByPlate(text);
+        //    var reservedCars = reservations.FindAll(x => x.CarID == car.CarID).ToList();
+        //    var match = reservations.Where(p => p.CarID == car.CarID && p.CostumerID == Convert.ToInt32(text2)
+        //    && p.EndDate == date && p.Location == text3);
+        //    var statuses = Domain.ReservationStatusesManager.ListStatuses();
+        //    var canceledReservations = statuses.FindAll(x => x.Name == "CANCELED").ToList();
 
 
-            var result = match.Where(p => canceledReservations.Any(x => x.ReservStatsID == p.ReservStatsID)).ToList();
+        //    var result = match.Where(p => canceledReservations.Any(x => x.ReservStatsID == p.ReservStatsID)).ToList();
 
 
-            if (result.Count() == 0)
-                return false;
-            else
-                return true;
+        //    if (result.Count() == 0)
+        //        return false;
+        //    else
+        //        return true;
 
-        }
+        //}
 
         private bool cityMatch(List<ReservationsDTO> reservations, string text1, string text2, DateTime date, string text3)
         {
