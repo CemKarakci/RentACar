@@ -199,7 +199,7 @@
             this.updateRentbutton.Name = "updateRentbutton";
             this.updateRentbutton.Size = new System.Drawing.Size(202, 75);
             this.updateRentbutton.TabIndex = 27;
-            this.updateRentbutton.Text = "UPDATE";
+            this.updateRentbutton.Text = "CANCEL";
             this.updateRentbutton.UseVisualStyleBackColor = true;
             this.updateRentbutton.Click += new System.EventHandler(this.updateRentbutton_Click);
             // 

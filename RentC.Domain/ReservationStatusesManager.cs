@@ -18,5 +18,16 @@ namespace RentC.Domain
             var status = Persistence.ReservationStatutesRepository.RetrieveStatus();
             return status;
         }
+
+
+        public static void UpdateStatus(DTO.ReservationStatusesDTO status)
+        {
+            Persistence.ReservationStatutesRepository.UpdateStatus(status);
+        }
+
+        public static List<DTO.ReservationStatusesDTO> ListStatuses()
+        {
+            return Persistence.ReservationStatutesRepository.ListStatuses();
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace RentC.Persistence
         private static ReservationStatuses ConvertToEntity(DTO.ReservationStatusesDTO status)
         {
             var newStatus = new ReservationStatuses();
+            newStatus.ReservStatsID = status.ReservStatsID;
             newStatus.Name = status.Name;
             newStatus.Description = status.Description;
             return newStatus;
@@ -37,6 +38,49 @@ namespace RentC.Persistence
 
             return statusDto;
 
+        }
+
+        public static void UpdateStatus(DTO.ReservationStatusesDTO status)
+        {
+            var db = new RentCDataBaseEntities();
+            var update = ConvertToEntity(status);
+
+            var newStatus = db.ReservationStatuses.Where(p => p.ReservStatsID == update.ReservStatsID).FirstOrDefault();
+
+            //newStatus.ReservStatsID = update.ReservStatsID;
+            newStatus.Name = update.Name;
+            newStatus.Description = update.Description;
+
+            db.SaveChanges();
+
+        }
+
+        public static List<DTO.ReservationStatusesDTO> ListStatuses()
+        {
+            var db = new RentCDataBaseEntities();
+            var statues = db.ReservationStatuses.ToList();
+
+            var statutesDTO = ConvertToDTO(statues);
+
+
+            return statutesDTO;
+
+        }
+
+        private static List<DTO.ReservationStatusesDTO> ConvertToDTO(List<ReservationStatuses> statues)
+        {
+            var statuesDTO = new List<DTO.ReservationStatusesDTO>();
+
+            foreach (var statue in statues)
+            {
+                var statuedto = new DTO.ReservationStatusesDTO();
+                statuedto.ReservStatsID = statue.ReservStatsID;
+                statuedto.Name = statue.Name;
+                statuedto.Description = statue.Description;
+
+                statuesDTO.Add(statuedto);
+            }
+            return statuesDTO;
         }
 
 

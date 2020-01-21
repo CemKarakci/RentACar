@@ -50,31 +50,37 @@ namespace RentC.Persistence
             return reservation;
         }
 
-        public static void UpdateCarRent(DTO.ReservationsDTO update)
-        {
-            var db = new RentCDataBaseEntities();
-            var updateReservation = ConvertToEntity(update);
+        //public static void UpdateCarRent(DTO.ReservationsDTO update)
+        //{
+        //    var db = new RentCDataBaseEntities();
+        //    var updateReservation = ConvertToEntity(update);
 
-            var reservation = db.Reservations.Where(p => p.CarID == updateReservation.CarID 
-            && p.CostumerID == updateReservation.CostumerID).FirstOrDefault<Reservations>();
+        //    var reservation = db.Reservations.Where(p => p.CarID == updateReservation.CarID 
+        //    && p.CostumerID == updateReservation.CostumerID).FirstOrDefault<Reservations>();
 
-            //reservation.ReservationID = updateReservation.ReservationID;
-            reservation.CarID = updateReservation.CarID;
-            reservation.CostumerID = updateReservation.CostumerID;
-            reservation.ReservStatsID = updateReservation.ReservStatsID;
-            reservation.StartDate = updateReservation.StartDate;
-            reservation.EndDate = updateReservation.EndDate;
-            reservation.Location = updateReservation.Location;
+        //    //reservation.ReservationID = updateReservation.ReservationID;
+        //    reservation.CarID = updateReservation.CarID;
+        //    reservation.CostumerID = updateReservation.CostumerID;
+        //    reservation.ReservStatsID = updateReservation.ReservStatsID;
+        //    reservation.StartDate = updateReservation.StartDate;
+        //    reservation.EndDate = updateReservation.EndDate;
+        //    reservation.Location = updateReservation.Location;
 
-            db.SaveChanges();
+        //    db.SaveChanges();
 
-        }
+        //}
 
         public static List<DTO.ReservationsDTO> ListReservations()
         {
             var db = new RentCDataBaseEntities();
             var reservations = db.Reservations.ToList();
-            var reservationDTO = ConvertToDTO(reservations);
+
+            var cars = Persistence.CarsRepository.ListCars();
+            var statuses = RentC.Persistence.ReservationStatutesRepository.ListStatuses();
+            var canceledReservations = statuses.FindAll(x => x.Name == "CANCELED").ToList();
+            var result = reservations.Where(p => !canceledReservations.Any(x => x.ReservStatsID == p.ReservStatsID)).ToList();
+
+            var reservationDTO = ConvertToDTO(result);
 
             return reservationDTO;
         }
